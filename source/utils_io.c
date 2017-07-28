@@ -48,7 +48,11 @@ void printSummary(struct CALModel3D* ca)
   max_velocity = 0.0;
   max_displacement = 0.0;
 
-  calApplyElementaryProcess3D(ca,summary);
+//  calApplyElementaryProcess3D(ca,summary);
+  for (int i = 0; i < X_CELLS; i++)
+   for (int j = 0; j < Y_CELLS; j++)
+     for (int k = 0; k < Z_CELLS; k++)
+  summary(ca,i,j,k);
   printf("step %6d, elapsed_time: %.6f s, number_of_particles: %d, totoal_energy: %.9f, max_v: %.6f, max_displacement: %e\n", step, elapsed_time, number_of_particles, total_energy, max_velocity, max_displacement);
 }
 

@@ -59,7 +59,7 @@
 // PHYSICAL TIME AND COMPUTATIONAL STEPS
 #define TOTAL_SIMULATION_TIME 0.075 //0.1 //[s]
 #define DELTA_T (0.1 * sqrt(PARTICLE_MASS/KN)) //[s]
-#define STEPS 5//(int)((double)(TOTAL_SIMULATION_TIME)/(double)(DELTA_T))
+#define STEPS (int)((double)(TOTAL_SIMULATION_TIME)/(double)(DELTA_T))
 #define INTEGRITY_CHECK_STEPS STEPS
 
 //SUBSTATES

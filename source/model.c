@@ -102,12 +102,22 @@ void updateF(CALreal* Q_current,CALreal* Q_next)
       //calCopyBuffer3Dr(Q_Fx_next[slot],Q_Fx_current[slot], X_CELLS, Y_CELLS, Z_CELLS);
       //calCopyBuffer3Dr(Q_Fy_next[slot],Q_Fy_current[slot], X_CELLS, Y_CELLS, Z_CELLS);
       //calCopyBuffer3Dr(Q_Fz_next[slot],Q_Fz_current[slot], X_CELLS, Y_CELLS, Z_CELLS);
-      #pragma omp target
-      calCopyBuffer3Dr(REAL_SUBSTATE(Q_next,slot,FX),REAL_SUBSTATE(Q_current,slot,FX), X_CELLS, Y_CELLS, Z_CELLS);
-      #pragma omp target
-      calCopyBuffer3Dr(REAL_SUBSTATE(Q_next,slot,FY),REAL_SUBSTATE(Q_current,slot,FY), X_CELLS, Y_CELLS, Z_CELLS);
-      #pragma omp target
-      calCopyBuffer3Dr(REAL_SUBSTATE(Q_next,slot,FZ),REAL_SUBSTATE(Q_current,slot,FZ), X_CELLS, Y_CELLS, Z_CELLS);
+//      #pragma omp target
+//      calCopyBuffer3Dr(REAL_SUBSTATE(Q_next,slot,FX),REAL_SUBSTATE(Q_current,slot,FX), X_CELLS, Y_CELLS, Z_CELLS);
+//#pragma omp target
+//calCopyBuffer3Dr(REAL_SUBSTATE(Q_next,slot,FY),REAL_SUBSTATE(Q_current,slot,FY), X_CELLS, Y_CELLS, Z_CELLS);
+//#pragma omp target
+//calCopyBuffer3Dr(REAL_SUBSTATE(Q_next,slot,FZ),REAL_SUBSTATE(Q_current,slot,FZ), X_CELLS, Y_CELLS, Z_CELLS);
+      CALint size=X_CELLS*Y_CELLS*Z_CELLS;
+#ifdef GPU
+#pragma omp target teams distribute parallel for num_teams(num_Teams) num_threads(num_Threads) dist_schedule(static,64) schedule(static,1)
+#endif
+   for(int i=0;i<size;i++)
+    {
+       REAL_SUBSTATE(Q_current,slot,FX)[i]=REAL_SUBSTATE(Q_next,slot,FX)[i];
+       REAL_SUBSTATE(Q_current,slot,FY)[i]=REAL_SUBSTATE(Q_next,slot,FY)[i];
+       REAL_SUBSTATE(Q_current,slot,FZ)[i]=REAL_SUBSTATE(Q_next,slot,FZ)[i];
+    }
     }
 }
 
@@ -119,13 +129,25 @@ void updateP(CALreal* Q_current,CALreal* Q_next)
       //calCopyBuffer3Dr(Q_px_next[slot],Q_px_current[slot], X_CELLS, Y_CELLS, Z_CELLS);
       //calCopyBuffer3Dr(Q_py_next[slot],Q_py_current[slot], X_CELLS, Y_CELLS, Z_CELLS);
       //calCopyBuffer3Dr(Q_pz_next[slot],Q_pz_current[slot], X_CELLS, Y_CELLS, Z_CELLS);
-      #pragma omp target
-      calCopyBuffer3Dr(REAL_SUBSTATE(Q_next,slot,PX),REAL_SUBSTATE(Q_current,slot,PX), X_CELLS, Y_CELLS, Z_CELLS);
-      #pragma omp target
-      calCopyBuffer3Dr(REAL_SUBSTATE(Q_next,slot,PY),REAL_SUBSTATE(Q_current,slot,PY), X_CELLS, Y_CELLS, Z_CELLS);
-      #pragma omp target
-      calCopyBuffer3Dr(REAL_SUBSTATE(Q_next,slot,PZ),REAL_SUBSTATE(Q_current,slot,PZ), X_CELLS, Y_CELLS, Z_CELLS);
+//      #pragma omp target
+//      calCopyBuffer3Dr(REAL_SUBSTATE(Q_next,slot,PX),REAL_SUBSTATE(Q_current,slot,PX), X_CELLS, Y_CELLS, Z_CELLS);
+//      #pragma omp target
+//      calCopyBuffer3Dr(REAL_SUBSTATE(Q_next,slot,PY),REAL_SUBSTATE(Q_current,slot,PY), X_CELLS, Y_CELLS, Z_CELLS);
+//      #pragma omp target
+//      calCopyBuffer3Dr(REAL_SUBSTATE(Q_next,slot,PZ),REAL_SUBSTATE(Q_current,slot,PZ), X_CELLS, Y_CELLS, Z_CELLS);
+      CALint size=X_CELLS*Y_CELLS*Z_CELLS;
+#ifdef GPU
+#pragma omp target teams distribute parallel for num_teams(num_Teams) num_threads(num_Threads) dist_schedule(static,64) schedule(static,1)
+#endif
+   for(int i=0;i<size;i++)
+    {
+       REAL_SUBSTATE(Q_current,slot,PX)[i]=REAL_SUBSTATE(Q_next,slot,PX)[i];
+       REAL_SUBSTATE(Q_current,slot,PY)[i]=REAL_SUBSTATE(Q_next,slot,PY)[i];
+       REAL_SUBSTATE(Q_current,slot,PZ)[i]=REAL_SUBSTATE(Q_next,slot,PZ)[i];
     }
+
+
+  }
 }
 
 void updateV(CALreal* Q_current,CALreal* Q_next)
@@ -136,12 +158,24 @@ void updateV(CALreal* Q_current,CALreal* Q_next)
       //calCopyBuffer3Dr(Q_vx_next[slot],Q_vx_current[slot], X_CELLS, Y_CELLS, Z_CELLS);
       //calCopyBuffer3Dr(Q_vy_next[slot],Q_vy_current[slot], X_CELLS, Y_CELLS, Z_CELLS);
       //calCopyBuffer3Dr(Q_vz_next[slot],Q_vz_current[slot], X_CELLS, Y_CELLS, Z_CELLS);
-      #pragma omp target
-      calCopyBuffer3Dr(REAL_SUBSTATE(Q_next,slot,VX),REAL_SUBSTATE(Q_current,slot,VX), X_CELLS, Y_CELLS, Z_CELLS);
-      #pragma omp target
-      calCopyBuffer3Dr(REAL_SUBSTATE(Q_next,slot,VY),REAL_SUBSTATE(Q_current,slot,VY), X_CELLS, Y_CELLS, Z_CELLS);
-      #pragma omp target
-      calCopyBuffer3Dr(REAL_SUBSTATE(Q_next,slot,VZ),REAL_SUBSTATE(Q_current,slot,VZ), X_CELLS, Y_CELLS, Z_CELLS);
+//      #pragma omp target
+//      calCopyBuffer3Dr(REAL_SUBSTATE(Q_next,slot,VX),REAL_SUBSTATE(Q_current,slot,VX), X_CELLS, Y_CELLS, Z_CELLS);
+//      #pragma omp target
+//      calCopyBuffer3Dr(REAL_SUBSTATE(Q_next,slot,VY),REAL_SUBSTATE(Q_current,slot,VY), X_CELLS, Y_CELLS, Z_CELLS);
+//      #pragma omp target
+//      calCopyBuffer3Dr(REAL_SUBSTATE(Q_next,slot,VZ),REAL_SUBSTATE(Q_current,slot,VZ), X_CELLS, Y_CELLS, Z_CELLS);
+        CALint size=X_CELLS*Y_CELLS*Z_CELLS;
+  #ifdef GPU
+  #pragma omp target teams distribute parallel for num_teams(num_Teams) num_threads(num_Threads) dist_schedule(static,64) schedule(static,1)
+  #endif
+     for(int i=0;i<size;i++)
+      {
+         REAL_SUBSTATE(Q_current,slot,VX)[i]=REAL_SUBSTATE(Q_next,slot,VX)[i];
+         REAL_SUBSTATE(Q_current,slot,VY)[i]=REAL_SUBSTATE(Q_next,slot,VY)[i];
+         REAL_SUBSTATE(Q_current,slot,VZ)[i]=REAL_SUBSTATE(Q_next,slot,VZ)[i];
+      }
+
+
     }
 }
 
@@ -149,9 +183,19 @@ void updateID(CALint* ID_current,CALint* ID_next)
 {
 
   for (int slot = 0; slot < MAX_NUMBER_OF_PARTICLES_PER_CELL; slot++)
+  {
       //calCopyBuffer3Di(Q_ID_next[slot],Q_ID_current[slot], X_CELLS, Y_CELLS, Z_CELLS);
-      #pragma omp target
-    calCopyBuffer3Di(INT_SUBSTATE(ID_next,slot,PID),INT_SUBSTATE(ID_current,slot,PID), X_CELLS, Y_CELLS, Z_CELLS);
+//      #pragma omp target
+//    calCopyBuffer3Di(INT_SUBSTATE(ID_next,slot,PID),INT_SUBSTATE(ID_current,slot,PID), X_CELLS, Y_CELLS, Z_CELLS);
+
+      CALint size=X_CELLS*Y_CELLS*Z_CELLS;
+#ifdef GPU
+#pragma omp target teams distribute parallel for num_teams(num_Teams) num_threads(num_Threads) dist_schedule(static,64) schedule(static,1)
+#endif
+   for(int i=0;i<size;i++)
+      INT_SUBSTATE(ID_current,slot,PID)[i]=INT_SUBSTATE(ID_next,slot,PID)[i];
+
+  }
 }
 
 void transferDataToDevice()
@@ -177,7 +221,7 @@ void requestUpdateFromDevice()
 //#pragma omp target exit data map(from:Q_current[0:Q_SIZE])
 //#pragma omp target exit data map(from:Q_next[0:Q_SIZE])
 }
-#pragma omp declare target
+
 void resetForce(CALint * ID_current,CALreal* Q_next)
 {
 #ifdef GPU
@@ -189,6 +233,7 @@ void resetForce(CALint * ID_current,CALreal* Q_next)
         resetF(ID_current,Q_next,i, j, k);
 
 }
+
 void innerCollision(CALint * ID_current,CALreal*Q_current,CALreal* Q_next)
 {
 
@@ -200,6 +245,7 @@ void innerCollision(CALint * ID_current,CALreal*Q_current,CALreal* Q_next)
       for (int k = 0; k < Z_CELLS; k++)
         inner_collision(ID_current,Q_current,Q_next, i, j, k);
 }
+
 void outerCollision(CALint * ID_current,CALreal*Q_current,CALreal* Q_next, CALint* Xi, CALint* Xj, CALint* Xk)
 {
 
@@ -211,6 +257,7 @@ void outerCollision(CALint * ID_current,CALreal*Q_current,CALreal* Q_next, CALin
       for (int k = 0; k < Z_CELLS; k++)
         outer_collision(ID_current,Q_current,Q_next,Xi,Xj,Xk, i, j, k);
 }
+
 void muovili(CALint * ID_current,CALreal*Q_current,CALreal* Q_next)
 {
 #ifdef GPU
@@ -220,8 +267,8 @@ void muovili(CALint * ID_current,CALreal*Q_current,CALreal* Q_next)
     for (int j = 0; j < Y_CELLS; j++)
       for (int k = 0; k < Z_CELLS; k++)
         movili(ID_current,Q_current,Q_next, i, j, k);
-
 }
+
 void muoviliCazzo(CALint * ID_current,CALint *ID_next,CALreal* Q_current,CALreal* Q_next, CALint* Xi, CALint* Xj, CALint* Xk)
 {
 #ifdef GPU
@@ -233,7 +280,7 @@ void muoviliCazzo(CALint * ID_current,CALint *ID_next,CALreal* Q_current,CALreal
         moviliCazzu(ID_current,ID_next,Q_current,Q_next, Xi,Xj,Xk, i, j, k);
 
 }
-#pragma omp end declare target
+
 void transizioniGlobali(struct CALModel3D* modello)
 {
 
