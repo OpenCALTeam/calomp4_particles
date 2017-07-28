@@ -1,12 +1,11 @@
-CC=/home/pnapoli/clang/bin/clang++
-CC_RELEASE=/home/pnapoli/clang_release/bin/clang++ 
+CC=clang++
+CC_RELEASE=clang++ 
 WARNING= -w
 OPENMP=-fopenmp=libomp
 CUDA=-fopenmp-targets=nvptx64-nvidia-cuda
 SOURCE=../source_cli/cli.c ../source/*.c 
 HEADER= -I ../include/
 OPENCALHEADER=-I /usr/local/opencal-1.0/include/
-OPENCALSOURCE=/home/pnapoli/Desktop/opencal-1.0/OpenCAL-OMP/source/*.c 
 OUTPUT_D= -o cal_dem_d
 OUTPUT_R= -o cal_dem_r
 OUTPUT_CPU_P_R= -o cal_dem_c_p_r
